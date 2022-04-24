@@ -5,6 +5,6 @@ enum PayType{
 }
 public class Main {
     public static void main(String[] args) {
-        help123
+        help123456
     }
 }
