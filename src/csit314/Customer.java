@@ -19,8 +19,8 @@ public class Customer extends User{
         this.curOrder = curOrder;
     }
 
-    public Customer(String userID, String userName, String gender, String DOB, String phoneNum, String password, ArrayList<Payment> paymentList, ArrayList<Finshed_Order> orderList, String vipStart, String vipEnd, ArrayList<Vehicle> vehicleList, Pre_Order curOrder) {
-        super(userID, userName, gender, DOB, phoneNum, password, paymentList, orderList);
+    public Customer(String userID, String userName, String gender, String DOB, String phoneNum, String password, String email, String vipStart, String vipEnd, ArrayList<Vehicle> vehicleList, Pre_Order curOrder) {
+        super(userID, userName, gender, DOB, phoneNum, password,email);
         this.vipStart = vipStart;
         this.vipEnd = vipEnd;
         this.vehicleList = vehicleList;

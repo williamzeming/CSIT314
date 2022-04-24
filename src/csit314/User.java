@@ -9,20 +9,18 @@ public class User {
     protected String DOB;
     protected String phoneNum;
     protected String password;
-    protected ArrayList<Payment> paymentList = new ArrayList<Payment>();
-    protected ArrayList<Finshed_Order> orderList = new ArrayList<Finshed_Order>();
+    protected String email;
     public User(){
 
     }
-    public User(String userID, String userName, String gender, String DOB, String phoneNum, String password, ArrayList<Payment> paymentList, ArrayList<Finshed_Order> orderList) {
+    public User(String userID, String userName, String gender, String DOB, String phoneNum, String password, String email) {
         this.userID = userID;
         this.userName = userName;
         this.gender = gender;
         this.DOB = DOB;
         this.phoneNum = phoneNum;
         this.password = password;
-        this.paymentList = paymentList;
-        this.orderList = orderList;
+        this.email = email;
     }
 
     public String getUserID() {
@@ -73,22 +71,15 @@ public class User {
         this.password = password;
     }
 
-    public ArrayList<Payment> getPaymentList() {
-        return paymentList;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPaymentList(ArrayList<Payment> paymentList) {
-        this.paymentList = paymentList;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public ArrayList<Finshed_Order> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(ArrayList<Finshed_Order> orderList) {
-        this.orderList = orderList;
-    }
-//    public String toJson(){
+    //    public String toJson(){
 //
 //
 //    }
