@@ -28,7 +28,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         JSONObject ob = readJson(json);
-        ResultSet rs = sqlCusSelect(ob);
     }
     //初始化连接sql
     public static Connection connectSql() throws ClassNotFoundException, SQLException {
@@ -55,45 +54,58 @@ public class Main {
         return conn;
     }
     //sql select
-    public static ResultSet sqlCusSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
+    public static Customer sqlCusSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
         Connection conn = connectSql();
         int cusID = ob.getInt("cusID");
         String sql = "select * from CUSTOMER where cusID = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1,cusID);
         ResultSet rs = psmt.executeQuery();
-        return rs;
+        ArrayList<Vehicle> vehicleList = sqlVehicleSelect(ob);
+        Pre_Order curOrder = new Pre_Order();
+        Customer cus = new Customer(rs.getInt("cusId"),rs.getString("userName"),rs.getString("gender"),rs.getString("DOB"), rs.getNString("phoneNum"),rs.getString("password"),
+                                    rs.getString("email"),rs.getString("vipStart"),rs.getString("vipEnd"),vehicleList,curOrder);
+        return cus;
     }
 
-    public static ResultSet sqlProSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
+    public static Professional sqlProSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
         Connection conn = connectSql();
         int proID = ob.getInt("proID");
         String sql = "select * from PROFESSION where proID = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1,proID);
         ResultSet rs = psmt.executeQuery();
-        return rs;
+        Professional pro = new Professional(rs.getInt("proId"),rs.getString("userName"),rs.getString("gender"),rs.getString("DOB"), rs.getNString("phoneNum"),rs.getString("password"),
+                                    rs.getString("email"),rs.getFloat("plevel"),rs.getDouble("balance"),rs.getString("location"));
+        return pro;
     }
-    public static ResultSet sqlVehicleSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
+    public static ArrayList sqlVehicleSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
         Connection conn = connectSql();
         int cusID = ob.getInt("cusID");
-        String plateNum = ob.getString("plateNum");
-        String sql = "select * from VEHICLE where cusID = ? and plateNum = ?";
+        String sql = "select * from VEHICLE where cusID = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1,cusID);
-        psmt.setString(2,plateNum);
         ResultSet rs = psmt.executeQuery();
-        return rs;
+        ArrayList vehicleList = new ArrayList<Vehicle>();
+        while (rs.next()){
+            Vehicle vehicle = new Vehicle(rs.getString("plateNum"),rs.getString("model"));
+            vehicleList.add(vehicle);
+        }
+        return vehicleList;
     }
 
-    public static ResultSet sqlOrderSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
+    public static JSONObject sqlOrderSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
         Connection conn = connectSql();
         int userID = ob.getInt("userID");
         String sql = "select * from ORDER where userID = ?";
         PreparedStatement psmt = conn.prepareStatement(sql);
         psmt.setInt(1,userID);
         ResultSet rs = psmt.executeQuery();
-        return rs;
+        JSONObject result = new JSONObject();
+        while (rs.next()){
+            //返回一个Json
+        }
+        return result;
     }
 
 
