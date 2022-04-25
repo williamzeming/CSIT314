@@ -28,19 +28,26 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         JSONObject ob = readJson(json);
+        System.out.println("hello world");
+        Connection conn = connectSql();
+        String sql = "create table test(id INT NOT NULL);";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+
+
+
     }
     //初始化连接sql
     public static Connection connectSql() throws ClassNotFoundException, SQLException {
-        final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        final String DB_URL      = "jdbc:mysql://localhost:3306/RUNOOB";
+        //final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+        //final String DB_URL      = "jdbc:mysql://localhost:3306/RUNOOB";
 
         // MySQL 8.0 以上版本 - JDBC 驱动名及数据库 URL
-        //static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-        //static final String DB_URL = "jdbc:mysql://localhost:3306/RUNOOB?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+        final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+        final String DB_URL = "jdbc:mysql://3.106.59.100:3306/csit314?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
 
         // 数据库的用户名与密码，需要根据自己的设置
-        final String USER = "root";
+        final String USER = "william";
         final String PASS = "123456";
 
         Connection conn = null;
@@ -306,55 +313,16 @@ public class Main {
         psmt.setString(2,plantNum);
         return psmt.execute();
     }
-    public ResultSet sqlSelect(String SQL) throws SQLException, ClassNotFoundException {
-        Connection conn = connectSql();
-        Statement  stmt = null;
-        try {
-
-            // 执行查询
-            System.out.println(" 实例化Statement对象...");
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(SQL);
-
-            // 完成后关闭
-            rs.close();
-            stmt.close();
-            conn.close();
-            return rs;
-        } catch (SQLException se) {
-            // 处理 JDBC 错误
-            se.printStackTrace();
-        } catch (Exception e) {
-            // 处理 Class.forName 错误
-            e.printStackTrace();
-        } finally {
-            // 关闭资源
-            try {
-                if (stmt != null) stmt.close();
-            } catch (SQLException se2) {
-            }// 什么都不做
-            try {
-                if (conn != null) conn.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
-        }
-        System.out.println("Goodbye!");
-        return null;
-    }
-    public boolean sqlInsert(String SQL) throws SQLException, ClassNotFoundException {
-        Connection conn = connectSql();
-        Statement  stmt = null;
-
-    }
 
 
-
+    //TODO
     //sql语句查询最后一个已存在的用户ID
-    public int getNewID() throws SQLException {
-        String    sql   = "";
-        ResultSet rs    = sqlSelect(sql);
-        int       newID = rs.getInt("id");
+    public int getNewID() throws SQLException, ClassNotFoundException {
+        Connection conn = connectSql();
+        String sql = "select MAX(cusID) from CUSTOMER;";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        ResultSet rs = psmt.executeQuery();
+        int newID = rs.getInt("cusID");
         newID++;
         return newID;
     }
@@ -379,53 +347,4 @@ public class Main {
         }
     }
 
-    public boolean checkPW(int userID, String inputPW) throws SQLException {
-        String sql = "";
-        ResultSet rs = sqlSelect(sql);
-        String  PW  = rs.getString("password");
-        boolean PWbool = false;
-        if (PW == inputPW) {
-            PWbool = true;
-        }
-        return PWbool;
-    }
-
-
-
-    public Customer cuslogin(int userID) throws SQLException {
-        String sql = "";
-        ResultSet rs = sqlSelect(sql);
-        String sqlVeh = "";
-        ResultSet rsVeh = sqlSelect(sqlVeh);
-        String    userName   = rs.getString("Name");
-        String    gender     = rs.getString("gender");
-        String    DOB        = rs.getString("DOB");
-        String    phone      = rs.getString("phone");
-        String    password   = rs.getString("password");
-        String    email      = rs.getString("email");
-        String    vipStart   = rs.getString("vipStart");
-        String    vipEnd     = rs.getString("vipEnd");
-        ArrayList vehcleList = createVehicle(rsVeh);
-        Pre_Order curOrder = new Pre_Order();
-        Customer  cus      = new Customer(userID, userName, gender, DOB, phone, password, email, vipStart, vipEnd, vehcleList, curOrder);
-        return cus;
-    }
-
-    public ArrayList createVehicle(ResultSet rsVeh) throws SQLException {
-        ArrayList vehcleList = new ArrayList<Vehicle>();
-        while (rsVeh.next()){
-            String    plateNum      = rsVeh.getString("plateNum");
-            String    model   = rsVeh.getString("model");
-            Vehicle vehicle = new Vehicle(plateNum, model);
-            vehcleList.add(vehicle);
-        }
-        return vehcleList;
-    }
-
-    public boolean dropVehicle(int userID, String plateNum) throws SQLException {
-        //通过userID和车牌号从vehicle里面删除一行
-        String sql = "";
-        ResultSet rs = sqlSelect(sql);
-
-    }
 }
