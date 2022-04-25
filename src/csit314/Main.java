@@ -98,6 +98,42 @@ public class Main {
 
 
     //sql insert
+    public static boolean sqlCusInsert(JSONObject ob) throws SQLException, ClassNotFoundException {
+        Connection con = connectSql();
+
+        int userID =0;
+        String userName="";
+        String gender="";
+        String DOB="";
+        String phoneNum="";
+        String password="";
+        String email="";
+        String vipStart="";
+        String vipEnd="";
+        ArrayList<Vehicle> vehicleList = new ArrayList<>();
+
+        String sql = userID+userName+gender+DOB+phoneNum+password+email+vipStart+vipEnd+vehicleList;
+        PreparedStatement psmt = con.prepareStatement(sql);
+        int columnOfSql=1;
+        psmt.setInt(columnOfSql, userID);
+        psmt.setString(columnOfSql++, userName);
+        psmt.setString(columnOfSql++, gender);
+        psmt.setString(columnOfSql++, DOB);
+        psmt.setString(columnOfSql++, phoneNum);
+        psmt.setString(columnOfSql++, password);
+        psmt.setString(columnOfSql++, email);
+        psmt.setString(columnOfSql++, vipStart);
+        psmt.setString(columnOfSql++, vipEnd);
+        for(int i=0;i<vehicleList.size();i++){
+            psmt.setString(columnOfSql++, vehicleList.get(i).getPlateNum());
+            psmt.setString(columnOfSql++, vehicleList.get(i).getModel());
+        }
+        if(psmt.execute()){
+            return true;
+        }
+
+        return false;
+    }
     //sql update
 
 
