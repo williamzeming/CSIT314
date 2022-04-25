@@ -3,7 +3,7 @@ package csit314;
 import java.util.ArrayList;
 
 public class User {
-    protected String userID;
+    protected int userID;
     protected String userName;
     protected String gender;
     protected String DOB;
@@ -13,7 +13,7 @@ public class User {
     public User(){
 
     }
-    public User(String userID, String userName, String gender, String DOB, String phoneNum, String password, String email) {
+    public User(int userID, String userName, String gender, String DOB, String phoneNum, String password, String email) {
         this.userID = userID;
         this.userName = userName;
         this.gender = gender;
@@ -23,11 +23,11 @@ public class User {
         this.email = email;
     }
 
-    public String getUserID() {
+    public int getUserID() {
         return userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 

@@ -13,7 +13,7 @@ public class Professional extends User{
         this.location = location;
     }
 
-    public Professional(String userID, String userName, String gender, String DOB, String phoneNum, String password, String email, float plevel, double balance, String location) {
+    public Professional(int userID, String userName, String gender, String DOB, String phoneNum, String password, String email, float plevel, double balance, String location) {
         super(userID, userName, gender, DOB, phoneNum, password,email);
         this.plevel = plevel;
         this.balance = balance;
