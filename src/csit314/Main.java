@@ -1,10 +1,7 @@
 package csit314;
 
-import netscape.javascript.JSObject;
-
 import java.sql.*;
 import java.util.ArrayList;
-import java.io.*;
 
 import org.json.JSONArray;
 
@@ -17,15 +14,24 @@ enum PayType {
 
 public class Main {
     ArrayList curCustomer = new ArrayList<Customer>();
+    static String json = "{\"contacDetails\": {\n" +   //JSON text in the file is written here
+                         "            \"firstName\": \"Ram\",\n" +
+                         "            \"lastName\": \"Sharma\"\n" +
+                         "    },\n" +
+                         "    \"phoneNumbers\": [\n" +
+                         "            {\n" +
+                         "                \"type\": \"home\",\n" +
+                         "                \"phone-number\": \"212 888-2365\",\n" +
+                         "            }\n" +
+                         "    ]" +
+                         "}";
 
     public static void main(String[] args) throws Exception {
-
-
-        readJson();
+        JSONObject ob = readJson(json);
+        ResultSet rs = sqlCusSelect(ob);
     }
-
-
-    public ResultSet SQLconnect(String SQL) {
+    //初始化连接sql
+    public Connection connectSql() throws ClassNotFoundException, SQLException {
         final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         final String DB_URL      = "jdbc:mysql://localhost:3306/RUNOOB";
 
@@ -40,18 +46,30 @@ public class Main {
 
         Connection conn = null;
         Statement  stmt = null;
-        try {
-            // 注册 JDBC 驱动
-            Class.forName(JDBC_DRIVER);
+        // 注册 JDBC 驱动
+        Class.forName(JDBC_DRIVER);
 
-            // 打开链接
-            System.out.println("连接数据库...");
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        // 打开链接
+        System.out.println("连接数据库...");
+        conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        return conn;
+    }
+    //sql select
+    public static ResultSet sqlCusSelect(JSONObject ob){
+
+        return rs;
+    }
+    //sql insert
+    //sql update
+    //sql delete
+    public ResultSet sqlSelect(String SQL) throws SQLException, ClassNotFoundException {
+        Connection conn = connectSql();
+        Statement  stmt = null;
+        try {
 
             // 执行查询
             System.out.println(" 实例化Statement对象...");
             stmt = conn.createStatement();
-            SQL  = "SELECT id, name, url FROM websites";
             ResultSet rs = stmt.executeQuery(SQL);
 
             // 完成后关闭
@@ -80,33 +98,26 @@ public class Main {
         System.out.println("Goodbye!");
         return null;
     }
+    public boolean sqlInsert(String SQL) throws SQLException, ClassNotFoundException {
+        Connection conn = connectSql();
+        Statement  stmt = null;
+
+    }
+
 
 
     //sql语句查询最后一个已存在的用户ID
     public int getNewID() throws SQLException {
         String    sql   = "";
-        ResultSet rs    = SQLconnect(sql);
+        ResultSet rs    = sqlSelect(sql);
         int       newID = rs.getInt("id");
         newID++;
         return newID;
     }
 
-    public static void readJson() throws Exception {
-
-        String json = "{\"contacDetails\": {\n" +   //JSON text in the file is written here
-                      "            \"firstName\": \"Ram\",\n" +
-                      "            \"lastName\": \"Sharma\"\n" +
-                      "    },\n" +
-                      "    \"phoneNumbers\": [\n" +
-                      "            {\n" +
-                      "                \"type\": \"home\",\n" +
-                      "                \"phone-number\": \"212 888-2365\",\n" +
-                      "            }\n" +
-                      "    ]" +
-                      "}";
-
+    public static JSONObject readJson(String json) throws Exception {
         JSONObject ob = new JSONObject(json);
-        register(ob);
+        return ob;
     }
 
     public static void register(JSONObject ob) throws Exception {
@@ -126,7 +137,7 @@ public class Main {
 
     public boolean checkPW(int userID, String inputPW) throws SQLException {
         String sql = "";
-        ResultSet rs = SQLconnect(sql);
+        ResultSet rs = sqlSelect(sql);
         String  PW  = rs.getString("password");
         boolean PWbool = false;
         if (PW == inputPW) {
@@ -139,9 +150,9 @@ public class Main {
 
     public Customer cuslogin(int userID) throws SQLException {
         String sql = "";
-        ResultSet rs = SQLconnect(sql);
+        ResultSet rs = sqlSelect(sql);
         String sqlVeh = "";
-        ResultSet rsVeh = SQLconnect(sqlVeh);
+        ResultSet rsVeh = sqlSelect(sqlVeh);
         String    userName   = rs.getString("Name");
         String    gender     = rs.getString("gender");
         String    DOB        = rs.getString("DOB");
@@ -165,5 +176,12 @@ public class Main {
             vehcleList.add(vehicle);
         }
         return vehcleList;
+    }
+
+    public boolean dropVehicle(int userID, String plateNum) throws SQLException {
+        //通过userID和车牌号从vehicle里面删除一行
+        String sql = "";
+        ResultSet rs = sqlSelect(sql);
+
     }
 }
