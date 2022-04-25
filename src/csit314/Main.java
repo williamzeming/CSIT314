@@ -18,7 +18,7 @@ enum PayType{
 public class Main {
     ArrayList curCustomer = new ArrayList<Customer>();
     public static void main(String[] args) throws Exception {
-
+sds
 
         readJson();
 
