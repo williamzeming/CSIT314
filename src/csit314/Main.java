@@ -150,6 +150,16 @@ public class Main {
 
 
     //sql delete
+    public boolean sqlDeleteVehicle(JSONObject ob) throws SQLException, ClassNotFoundException {
+        Connection conn = connectSql();
+        int cusID = ob.getInt("cusID");
+        String plantNum = ob.getString("plantNum");
+        String sql = "delete * from VEHICLE where cusID = ? and plantNum = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,cusID);
+        psmt.setString(2,plantNum);
+        return psmt.execute();
+    }
     public ResultSet sqlSelect(String SQL) throws SQLException, ClassNotFoundException {
         Connection conn = connectSql();
         Statement  stmt = null;
