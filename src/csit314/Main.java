@@ -65,6 +65,37 @@ public class Main {
         return rs;
     }
 
+    public static ResultSet sqlProSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
+        Connection conn = connectSql();
+        int proID = ob.getInt("proID");
+        String sql = "select * from PROFESSION where proID = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,proID);
+        ResultSet rs = psmt.executeQuery();
+        return rs;
+    }
+    public static ResultSet sqlVehicleSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
+        Connection conn = connectSql();
+        int cusID = ob.getInt("cusID");
+        String plateNum = ob.getString("plateNum");
+        String sql = "select * from VEHICLE where cusID = ? and plateNum = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,cusID);
+        psmt.setString(2,plateNum);
+        ResultSet rs = psmt.executeQuery();
+        return rs;
+    }
+
+    public static ResultSet sqlOrderSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
+        Connection conn = connectSql();
+        int userID = ob.getInt("userID");
+        String sql = "select * from ORDER where userID = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,userID);
+        ResultSet rs = psmt.executeQuery();
+        return rs;
+    }
+
 
     //sql insert
     //sql update
