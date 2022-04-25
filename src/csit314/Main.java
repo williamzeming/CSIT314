@@ -1,6 +1,5 @@
 package csit314;
 
-import jdk.nashorn.internal.parser.JSONParser;
 import netscape.javascript.JSObject;
 
 import java.sql.*;
@@ -10,7 +9,6 @@ import org.json.JSONArray;
 
 import org.json.JSONObject;
 
-import org.junit.*;
 
 enum PayType{
     VISA,MASTERCARD,UNIONPAY,PAYPAL;
