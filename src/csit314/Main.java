@@ -10,6 +10,7 @@ import org.json.JSONArray;
 
 import org.json.JSONObject;
 
+import org.junit.*;
 
 enum PayType{
     VISA,MASTERCARD,UNIONPAY,PAYPAL;
@@ -120,7 +121,6 @@ public class Main {
         //getting first and last name
         String firstName = ob.getJSONObject("contacDetails").getString("firstName");
         String lastName = ob.getJSONObject("contacDetails").getString("lastName");
-
         System.out.println("FirstName " + firstName);
         System.out.println("LastName " + lastName);
 
