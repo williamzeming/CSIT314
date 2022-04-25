@@ -123,9 +123,7 @@ public class Main {
         String vipStart="";
         String vipEnd="";
 
-
-
-        String sql="insert into CUSTOMER (userID,userName,gender,DOB,phoneNum,password,email,vipStart,vipEnd) values (?,?,?,?,?,?,?,?,?)";
+        String sql="insert into CUSTOMER (userID,userName,gender,DOB,phoneNum,password,email,vipStart,vipEnd) values (?,?,?,?,?,?,?,?,?);";
 
         PreparedStatement psmt = con.prepareStatement(sql);
         int columnOfSql=1;
@@ -191,7 +189,6 @@ public class Main {
     //sql insert order
     public static boolean sqlOrdInsert(JSONObject ob) throws SQLException, ClassNotFoundException {
         Connection con = connectSql();
-
 
         String orderID="";
         String orderStartDate="";
@@ -261,10 +258,9 @@ public class Main {
         //执行SQL语句
         return psmt.execute();
     }
-    //sql update customer
+    //sql update Professional
     public static boolean updateProfessional(JSONObject ob) throws SQLException, ClassNotFoundException {
         Connection con = connectSql();
-
 
         int userID =0;
         String userName="";
