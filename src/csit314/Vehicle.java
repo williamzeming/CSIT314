@@ -8,7 +8,9 @@ public class Vehicle {
         this.plateNum = plateNum;
         this.model    = model;
     }
+    public Vehicle() {
 
+    }
     public String getPlateNum() {
         return plateNum;
     }

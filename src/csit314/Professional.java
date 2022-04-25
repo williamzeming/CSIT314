@@ -7,6 +7,9 @@ public class Professional extends User{
     private double balance;
     private String location;
 
+    public Professional() {
+
+    }
     public Professional(float plevel, double balance, String location) {
         this.plevel = plevel;
         this.balance = balance;

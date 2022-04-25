@@ -97,7 +97,7 @@ public class Main {
     }
 
 
-    //sql insert
+    //sql insert customer
     public static boolean sqlCusInsert(JSONObject ob) throws SQLException, ClassNotFoundException {
         Connection con = connectSql();
 
@@ -110,9 +110,11 @@ public class Main {
         String email="";
         String vipStart="";
         String vipEnd="";
-        ArrayList<Vehicle> vehicleList = new ArrayList<>();
 
-        String sql = userID+userName+gender+DOB+phoneNum+password+email+vipStart+vipEnd+vehicleList;
+
+
+        String sql="insert into CUSTOMER (userID,userName,gender,DOB,phoneNum,password,email,vipStart,vipEnd) values (?,?,?,?,?,?,?,?,?)";
+
         PreparedStatement psmt = con.prepareStatement(sql);
         int columnOfSql=1;
         psmt.setInt(columnOfSql, userID);
@@ -124,18 +126,166 @@ public class Main {
         psmt.setString(columnOfSql++, email);
         psmt.setString(columnOfSql++, vipStart);
         psmt.setString(columnOfSql++, vipEnd);
-        for(int i=0;i<vehicleList.size();i++){
-            psmt.setString(columnOfSql++, vehicleList.get(i).getPlateNum());
-            psmt.setString(columnOfSql++, vehicleList.get(i).getModel());
-        }
-        if(psmt.execute()){
-            return true;
-        }
 
-        return false;
+        return psmt.execute();
     }
-    //sql update
+    //sql insert professional
+    public static boolean sqlProInsert(JSONObject ob) throws SQLException, ClassNotFoundException {
+        Connection con = connectSql();
 
+        int userID =0;
+        String userName="";
+        String gender="";
+        String DOB="";
+        String phoneNum="";
+        String password="";
+        String email="";
+        float plevel = 1;
+        double balance = 1.0;
+        String location = "";
+
+        String sql="insert into CUSTOMER (userID,userName,gender,DOB,phoneNum,password,email,plevel,balance,location) values (?,?,?,?,?,?,?,?,?,?)";
+        PreparedStatement psmt = con.prepareStatement(sql);
+        int columnOfSql=1;
+        psmt.setInt(columnOfSql, userID);
+        psmt.setString(columnOfSql++, userName);
+        psmt.setString(columnOfSql++, gender);
+        psmt.setString(columnOfSql++, DOB);
+        psmt.setString(columnOfSql++, phoneNum);
+        psmt.setString(columnOfSql++, password);
+        psmt.setString(columnOfSql++, email);
+        psmt.setFloat(columnOfSql++, plevel);
+        psmt.setDouble(columnOfSql++, balance);
+        psmt.setString(columnOfSql++, location);
+        return psmt.execute();
+    }
+    //sql insert vehicle
+    public static boolean sqlVehInsert(JSONObject ob) throws SQLException, ClassNotFoundException {
+        Connection con = connectSql();
+
+        int userID =0;
+        String plateNum="";
+        String model="";
+
+
+        String sql="insert into CUSTOMER (userID,plateNum,model) values (?,?,?)";
+        PreparedStatement psmt = con.prepareStatement(sql);
+        int columnOfSql=1;
+        psmt.setInt(columnOfSql, userID);
+        psmt.setString(columnOfSql++, plateNum);
+        psmt.setString(columnOfSql++, model);
+        return psmt.execute();
+    }
+    //sql insert order
+    public static boolean sqlOrdInsert(JSONObject ob) throws SQLException, ClassNotFoundException {
+        Connection con = connectSql();
+
+
+        String orderID="";
+        String orderStartDate="";
+        Customer customerID = new Customer();
+        double price=1;
+        Vehicle vehiclePlate = new Vehicle();
+        String location="";
+        String issue="";
+        Professional professional= new Professional();
+        String orderEndDate="";
+        String review="";
+        float rating=1;
+        String payCardNum="";
+        PayType payType=PayType.valueOf("VISA");
+        String sql="insert into CUSTOMER (orderID,orderStartDate,customerID,price,vehiclePlate,location,issue,professional,orderEndDate,review,rating,payCardNum,payType) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        PreparedStatement psmt = con.prepareStatement(sql);
+        int columnOfSql=1;
+        psmt.setString(columnOfSql, orderID);
+        psmt.setString(columnOfSql++, orderStartDate);
+        psmt.setInt(columnOfSql++, customerID.getUserID());
+        psmt.setDouble(columnOfSql++, price);
+        psmt.setString(columnOfSql++, vehiclePlate.getPlateNum());
+        psmt.setString(columnOfSql++, location);
+        psmt.setString(columnOfSql++, issue);
+        psmt.setInt(columnOfSql++, professional.getUserID());
+        psmt.setString(columnOfSql++, orderEndDate);
+        psmt.setString(columnOfSql++, review);
+        psmt.setFloat(columnOfSql++, rating);
+        psmt.setString(columnOfSql++, payCardNum);
+        psmt.setString(columnOfSql++, String.valueOf(payType));
+
+        return psmt.execute();
+    }
+
+    //sql update customer
+    public static boolean updateCustomer(JSONObject ob) throws SQLException, ClassNotFoundException {
+        Connection con = connectSql();
+
+
+        int userID =0;
+        String userName="";
+        String gender="";
+        String DOB="";
+        String phoneNum="";
+        String password="";
+        String email="";
+        String vipStart="";
+        String vipEnd="";
+
+        String sql = "" +
+                "update CUSTOMER " +
+                "set userName=?,gender=?,DOB=?,phoneNum=?,password=?,email=?,vipStart=?,vipEnd=?," +
+                "where userID=?";
+        //预编译sql语句
+        PreparedStatement psmt = con.prepareStatement(sql);
+        int columnOfSql=1;
+        //先对应SQL语句，给SQL语句传递参数
+        psmt.setInt(columnOfSql, userID);
+        psmt.setString(columnOfSql++, userName);
+        psmt.setString(columnOfSql++, gender);
+        psmt.setString(columnOfSql++, DOB);
+        psmt.setString(columnOfSql++, phoneNum);
+        psmt.setString(columnOfSql++, password);
+        psmt.setString(columnOfSql++, email);
+        psmt.setString(columnOfSql++, vipStart);
+        psmt.setString(columnOfSql++, vipEnd);
+        //执行SQL语句
+        return psmt.execute();
+    }
+    //sql update customer
+    public static boolean updateProfessional(JSONObject ob) throws SQLException, ClassNotFoundException {
+        Connection con = connectSql();
+
+
+        int userID =0;
+        String userName="";
+        String gender="";
+        String DOB="";
+        String phoneNum="";
+        String password="";
+        String email="";
+        float plevel = 1;
+        double balance = 1.0;
+        String location = "";
+
+        String sql = "" +
+                "update CUSTOMER " +
+                "set userName=?,gender=?,DOB=?,phoneNum=?,password=?,email=?,plevel=?,balance=?,location=?" +
+                "where userID=?";
+        //预编译sql语句
+        PreparedStatement psmt = con.prepareStatement(sql);
+        int columnOfSql=1;
+        //先对应SQL语句，给SQL语句传递参数
+        psmt.setInt(columnOfSql, userID);
+        psmt.setString(columnOfSql++, userName);
+        psmt.setString(columnOfSql++, gender);
+        psmt.setString(columnOfSql++, DOB);
+        psmt.setString(columnOfSql++, phoneNum);
+        psmt.setString(columnOfSql++, password);
+        psmt.setString(columnOfSql++, email);
+        psmt.setFloat(columnOfSql++, plevel);
+        psmt.setDouble(columnOfSql++, balance);
+        psmt.setString(columnOfSql++, location);
+        //执行SQL语句
+        return psmt.execute();
+    }
 
     //sql delete
     public ResultSet sqlSelect(String SQL) throws SQLException, ClassNotFoundException {
