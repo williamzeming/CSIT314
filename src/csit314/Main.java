@@ -31,7 +31,7 @@ public class Main {
         ResultSet rs = sqlCusSelect(ob);
     }
     //初始化连接sql
-    public Connection connectSql() throws ClassNotFoundException, SQLException {
+    public static Connection connectSql() throws ClassNotFoundException, SQLException {
         final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         final String DB_URL      = "jdbc:mysql://localhost:3306/RUNOOB";
 
@@ -55,12 +55,21 @@ public class Main {
         return conn;
     }
     //sql select
-    public static ResultSet sqlCusSelect(JSONObject ob){
-
+    public static ResultSet sqlCusSelect(JSONObject ob) throws SQLException, ClassNotFoundException {
+        Connection conn = connectSql();
+        int cusID = ob.getInt("cusID");
+        String sql = "select * from CUSTOMER where cusID = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setInt(1,cusID);
+        ResultSet rs = psmt.executeQuery();
         return rs;
     }
+
+
     //sql insert
     //sql update
+
+
     //sql delete
     public ResultSet sqlSelect(String SQL) throws SQLException, ClassNotFoundException {
         Connection conn = connectSql();
