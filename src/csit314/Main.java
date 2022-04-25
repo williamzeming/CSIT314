@@ -20,7 +20,23 @@ public class Main {
 
 
         readJson();
+        // 展开结果集数据库
+        while(rs.next()){
+            // 通过字段检索
+            int id  = rs.getInt("id");
+            String name = rs.getString("name");
+            String url = rs.getString("url");
 
+            // 输出数据
+            System.out.print("ID: " + id);
+            System.out.print(", 站点名称: " + name);
+            System.out.print(", 站点 URL: " + url);
+            System.out.print("\n");
+        }
+    }
+
+
+    public ResultSet SQLconnect(String SQL){
         final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         final String DB_URL = "jdbc:mysql://localhost:3306/RUNOOB";
 
@@ -46,27 +62,14 @@ public class Main {
             // 执行查询
             System.out.println(" 实例化Statement对象...");
             stmt = conn.createStatement();
-            String sql;
-            sql = "SELECT id, name, url FROM websites";
-            ResultSet rs = stmt.executeQuery(sql);
+            SQL = "SELECT id, name, url FROM websites";
+            ResultSet rs = stmt.executeQuery(SQL);
 
-            // 展开结果集数据库
-            while(rs.next()){
-                // 通过字段检索
-                int id  = rs.getInt("id");
-                String name = rs.getString("name");
-                String url = rs.getString("url");
-
-                // 输出数据
-                System.out.print("ID: " + id);
-                System.out.print(", 站点名称: " + name);
-                System.out.print(", 站点 URL: " + url);
-                System.out.print("\n");
-            }
             // 完成后关闭
             rs.close();
             stmt.close();
             conn.close();
+            return rs;
         }catch(SQLException se){
             // 处理 JDBC 错误
             se.printStackTrace();
@@ -86,11 +89,18 @@ public class Main {
             }
         }
         System.out.println("Goodbye!");
-
-
+        return null;
     }
-    public int getNewID(){
-        int newID = 0;
+
+
+
+
+
+    //sql语句查询最后一个已存在的用户ID
+    public int getNewID() throws SQLException {
+        String sql = "";
+        ResultSet rs = SQLconnect(sql);
+        int newID = rs.getInt("id");
         newID++;
         return newID;
     }
@@ -128,52 +138,50 @@ public class Main {
             String post_id = arr.getJSONObject(i).getString("phone-number");
             System.out.println(post_id);
         }
-
-
     }
 
 
 
-//    public boolean checkPW(String userID , String inputPW) {
-//        //根据userID去sql找PW
-//        String PW = getPW();
-//        boolean PWbool = false;
-//        if (PW == inputPW){
-//            PWbool = true;
-//        }
-//        return PWbool;
-//    }
-//    public ResultSet loadCusByID(String userID){
-//        ResultSet rs = stmt.executeQuery(sql);
-//        rs.close();
-//        stmt.close();
-//        conn.close();
-//        return rs;
-//    }
-//
-//    public ResultSet getVehicleByID(String userID){
-//        ResultSet rs;
-//        return rs;
-//    }
-//    public Customer cuslogin(String userID) throws SQLException {
-//        ResultSet rs = loadCusByID(userID);
-//        String    userName = rs.getString("Name");
-//        String    gender = rs.getString("gender");
-//        String    DOB = rs.getString("DOB");
-//        String    phone = rs.getString("phone");
-//        String    password = rs.getString("password");
-//        String    email = rs.getString("email");
-//        String    vipStart = rs.getString("vipStart");
-//        String    vipEnd = rs.getString("vipEnd");
-//        ResultSet vehcle = getVehicleByID(userID);
-//        ArrayList vehcleList = new ArrayList<Vehicle>();
-//        vehcleList.add(vehcle);
-//        Pre_Order curOrder = new Pre_Order();
-//        Customer cus = new Customer(userID,userName,gender,DOB,phone,password,email,vipStart,vipEnd,vehcleList,curOrder);
-//        return cus;
-//    }
-//    public Vehicle createVehicle(String plateNum,String model){
-//        Vehicle vehicle = new Vehicle(plateNum,model);
-//        return vehicle;
-//    }
+    public boolean checkPW(String userID , String inputPW) {
+        //根据userID去sql找PW
+        String PW = getPW();
+        boolean PWbool = false;
+        if (PW == inputPW){
+            PWbool = true;
+        }
+        return PWbool;
+    }
+    public ResultSet loadCusByID(String userID){
+        ResultSet rs = stmt.executeQuery(sql);
+        rs.close();
+        stmt.close();
+        conn.close();
+        return rs;
+    }
+
+    public ResultSet getVehicleByID(String userID){
+        ResultSet rs;
+        return rs;
+    }
+    public Customer cuslogin(String userID) throws SQLException {
+        ResultSet rs = loadCusByID(userID);
+        String    userName = rs.getString("Name");
+        String    gender = rs.getString("gender");
+        String    DOB = rs.getString("DOB");
+        String    phone = rs.getString("phone");
+        String    password = rs.getString("password");
+        String    email = rs.getString("email");
+        String    vipStart = rs.getString("vipStart");
+        String    vipEnd = rs.getString("vipEnd");
+        ResultSet vehcle = getVehicleByID(userID);
+        ArrayList vehcleList = new ArrayList<Vehicle>();
+        vehcleList.add(vehcle);
+        Pre_Order curOrder = new Pre_Order();
+        Customer cus = new Customer(userID,userName,gender,DOB,phone,password,email,vipStart,vipEnd,vehcleList,curOrder);
+        return cus;
+    }
+    public Vehicle createVehicle(String plateNum,String model){
+        Vehicle vehicle = new Vehicle(plateNum,model);
+        return vehicle;
+    }
 }
